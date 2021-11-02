@@ -175,7 +175,7 @@ def AImageVerify(request):
                 sve = cv2.imwrite(f_out,final_img)
 
                 subject = "Image verification successful (E-recycler)"
-                body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached."
+                body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached. You will be getting the reward point once the box is collected from you."
                 sender_email = "ab7710850@gmail.com"
                 receiver_email = request.user.email
 
@@ -326,7 +326,7 @@ def FImageVerify(request):
                 sve = cv2.imwrite(f_out,final_img)
 
                 subject = "Image verification successful (E-recycler)"
-                body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached."
+                body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached. You will be getting the reward point once the box is collected from you."
                 sender_email = "ab7710850@gmail.com"
                 receiver_email = request.user.email
 
