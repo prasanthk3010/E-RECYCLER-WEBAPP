@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="theme-color" content="#5F788A" />
+
+    <!--alertify.js -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+    <!-- lightbox js -->
+    <link href="{% static 'users/css/lightbox.css' %}" rel="stylesheet" />
+    <script src="{% static 'users/js/lightbox-plus-jquery.js' %}"></script>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- jquery-confirm package -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script>
+    lightbox.option({
+      'resizeDuration': 200,
+      'wrapAround': true,
+      'disableScrolling': true,
+      'positionFromTop':200,
+    })
+</script>
+<!--https://lokeshdhakar.com/projects/lightbox2/-->
+
+<script>
+    document.onkeydown = function(e) {
+  if(event.keyCode == 123) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+     return false;
+  }
+}
+</script>
+
+<!-- https://stackoverflow.com/questions/28690564/is-it-possible-to-remove-inspect-element
+I have one requirement for one page. In that page I want to block the user to perform below actions,
+Right Click
+F12
+Ctrl + Shift + I
+Ctrl + Shift + J
+Ctrl + Shift + C
+Ctrl + U
+-->
+<!-- https://drive.google.com/file/d/1KeZWIqew4Vy1SIRBkQThEwnmzxOt11c0/view?usp=sharing -->
+
+   <title>E-Recycler - A tool to monetize your E-Shopping waste.</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- fa fa css -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/main.css' %}">
+
+
+    {% if title %}
+    <title>Django Blog - {{ title }}</title>
+    {% else %}
+    <title></title>
+    {% endif %}
+</head>
+<style>
+
+</style>
+
+<body>
+{% if request.user.profile.bio == ''  %}
+<script type="text/javascript">
+    var alerted = localStorage.getItem('alerted') || '';
+    if (alerted != 'yes') {
+     alertify.alert("Complete your profile today").bringToFront().set({title:"Remainder 💡"}).set('movable', false);
+     localStorage.setItem('alerted','yes');
+    }
+</script>
+{% endif %}
+
+{% if not request.user.is_authenticated %}
+<script>
+localStorage.removeItem('alerted');
+</script>
+{% endif %}
+
+    <header class="site-header">
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top" style= "box-shadow: 5px 5px 5px #c4c4c2;">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{% url 'home' %}" ><b>E-RECYCLER</b></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                    </div>
+                     <!--Navbar Right Side-->
+                    <div class="navbar-nav">
+                    
+                        {% if request.path == '/verification/amazon/'%}
+                        <a class="nav-item nav-link" onclick="history.back(-1)"><button class = "btn btn-warning btn-sm"><b>Back</b></a>
+                        {% elif request.path == '/verification/flipcart/'%}
+                        <a class="nav-item nav-link" onclick="history.back(-1)"><button class = "btn btn-warning btn-sm"><b>Back</b></a>
+                         {% else %}
+                        <a class="nav-item nav-link" href="/"><button class = "btn btn-warning btn-sm"><b>Back</b></a>
+                        {% endif %}
+
+                    </div>
+                 </div>
+
+
+            </div>
+        </nav>
+
+    </header>
+</script>
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% if messages %}
+                {% for message in messages %}
+                 <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+              </div>
+                {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+    </main>
+    {% block main %}{% endblock main %}
+     <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

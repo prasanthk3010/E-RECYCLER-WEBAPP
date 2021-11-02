@@ -1,0 +1,14 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+<h2><u>Verification slots available</u></h2>
+<br>
+<ul>
+<li><a href="{% url 'amazon-verify' %}"><button class="btn btn-outline-info">Amazon Image Verification </button></a></li>
+<br>
+<li><a href="{% url 'flipcart-verify' %}"><button class="btn btn-outline-info">Flipcart Image Verification </button></a></li>
+</ul>
+<br>
+</div>
+{% endblock content %}

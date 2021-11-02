@@ -1,0 +1,27 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>.zoom-in {cursor: zoom-in;}
+</style>
+<div class=content-section>
+    <div class="media">
+        <a href="{{ user.profile.image.url }}" class="zoom-in" data-lightbox="profile"><img class="rounded-circle account-img" src="{{ user.profile.image.url }}"></a>
+        <br><br>
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ u_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" type=submit>Update</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
