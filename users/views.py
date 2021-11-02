@@ -11,11 +11,12 @@ from django.contrib.auth.models import User
 from tensorflow.keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
-import os
-import qrcode
-import time
-import uuid
-import cv2
+import os,cv2,qrcode,time,uuid
+import email, smtplib, ssl
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 
@@ -153,13 +154,6 @@ def AImageVerify(request):
                 f_out = f"./final_output/amazon/{request.user.username}{unid}"+".png"
                 sve = cv2.imwrite(f_out,final_img)
 
-
-                import email, smtplib, ssl
-                from email import encoders
-                from email.mime.base import MIMEBase
-                from email.mime.multipart import MIMEMultipart
-                from email.mime.text import MIMEText
-
                 subject = "Image verification successful (E-recycler)"
                 body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached."
                 sender_email = "ab7710850@gmail.com"
@@ -292,13 +286,6 @@ def FImageVerify(request):
                 f_out = f"./final_output/flipcart/{request.user.username}{unid}"+".png"
                 sve = cv2.imwrite(f_out,final_img)
 
-
-                import email, smtplib, ssl
-                from email import encoders
-                from email.mime.base import MIMEBase
-                from email.mime.multipart import MIMEMultipart
-                from email.mime.text import MIMEText
-
                 subject = "Image verification successful (E-recycler)"
                 body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached."
                 sender_email = "ab7710850@gmail.com"
@@ -357,9 +344,6 @@ def FImageVerify(request):
         form = FlipcartImageVerifyForm()
 
     return render(request, 'users/fimageverify.html', {'form':form})
-
-
-
 
 @login_required
 def user_logout(request):
