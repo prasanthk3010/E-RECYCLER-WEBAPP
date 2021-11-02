@@ -117,7 +117,22 @@ def AImageVerify(request):
             # run the inference
             prediction = model.predict(data)[0]
             predicted_class = None
-            if prediction[0]>prediction[1]:
+
+            second_check = os.listdir("./media/amazon_images")
+
+            for i in second_check:
+                splt = os.path.splitext(i)
+                ck = splt[0][0:-8]+splt[1]
+                print(ck)
+
+           
+            if img in ck:
+                predicted_class = "This photo was already uploaded"
+                os.remove("./media/amazon_images/"+img)
+                messages.warning(request,f'{predicted_class}')
+                return redirect(reverse('amazon-verify'))
+
+            elif prediction[0]>prediction[1]:
                 unid = str(uuid.uuid4())[:8]
                 source = inpt
                 rename_file = os.path.splitext(source)
@@ -132,9 +147,14 @@ def AImageVerify(request):
 
                 data =  f"""
                 Name: {request.user.username} 
+
                 Image-Name: {img} 
+
                 category: {cat}
-                id: {unid}"""
+
+                id: {unid}
+                
+                """
                 #data = "whatsapp://send?phone=+916369613398"
                 qr.add_data(data)
                 qr.make (fit = True) ## makes the size changable
@@ -249,7 +269,21 @@ def FImageVerify(request):
             # run the inference
             prediction = model.predict(data)[0]
             predicted_class = None
-            if prediction[0]<prediction[1]:
+            second_check = os.listdir("./media/flipcart_images")
+
+            for i in second_check:
+                splt = os.path.splitext(i)
+                ck = splt[0][0:-8]+splt[1]
+                print(ck)
+
+           
+            if img in ck:
+                predicted_class = "This photo was already uploaded"
+                os.remove("./media/flipcart_images/"+img)
+                messages.warning(request,f'{predicted_class}')
+                return redirect(reverse('flipcart-verify'))
+
+            elif prediction[0]<prediction[1]:
                 unid = str(uuid.uuid4())[:8]
                 source = inpt
                 rename_file = os.path.splitext(source)
@@ -264,9 +298,14 @@ def FImageVerify(request):
 
                 data =  f"""
                 Name: {request.user.username} 
+
                 Image-Name: {img} 
+
                 Category: {cat}
-                id: {unid}"""
+
+                id: {unid}
+                
+                """
                 #data = "whatsapp://send?phone=+916369613398"
                 qr.add_data(data)
                 qr.make (fit = True) ## makes the size changable
