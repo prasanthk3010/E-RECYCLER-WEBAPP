@@ -290,11 +290,11 @@ def FImageVerify(request):
                 new_name = rename_file[0]+unid+rename_file[1] 
                 dest = new_name
                 os.rename(source,dest)
-                predicted_class = "Uploaded image was verified as 'FLIPCART' "
+                predicted_class = "Uploaded image was verified as 'FLIPKART' "
         
                 qr = qrcode.QRCode(version = 1 , box_size=15 , border=5)
                 
-                cat = "Flipcart"
+                cat = "Flipkart"
 
                 data =  f"""
                 Name: {request.user.username} 
@@ -372,7 +372,7 @@ def FImageVerify(request):
                     server.login(sender_email, 'grfbsxqyymukecvg')
                     server.sendmail(sender_email, receiver_email, text)
             else:
-                predicted_class = "No, this image is not verified as 'FLIPCART'"
+                predicted_class = "No, this image is not verified as 'FLIPKART'"
                 os.remove(inpt)
 
             print(prediction)
