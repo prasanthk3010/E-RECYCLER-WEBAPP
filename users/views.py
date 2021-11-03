@@ -17,12 +17,17 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from .models import AmazonImageVerify, PointsForVerifiedUploads
 
 
 
 # Create your views here.
 def home(request):
-    return render(request, 'users/home.html')
+    ptsaf = PointsForVerifiedUploads.objects.filter(user=request.user.id).values_list('points',flat=True).count()
+    # ptsf = FlipcartImageVerify.objects.filter(user=request.user.id).values_list('points',flat=True).count()
+    # ptsfinal = int(ptsa) + int(ptsf)
+    context = {'pts':ptsaf}
+    return render(request, 'users/home.html',context)
 
 
 def register(request):
@@ -90,8 +95,8 @@ def AImageVerify(request):
             name = form.save(commit=False)
             name.user = request.user
             name.save()
+            
             img = str(form.cleaned_data.get('a_image'))
-            print(img)
             inpt = './media/amazon_images/'+img
             # Load the model
             model = load_model('./keras_model.h5')
@@ -139,8 +144,13 @@ def AImageVerify(request):
                 new_name = rename_file[0]+unid+rename_file[1] 
                 dest = new_name
                 os.rename(source,dest)
-                predicted_class = "Uploaded image was verified as 'AMAZON' "
-        
+                predicted_class = "Uploaded image was verified as 'AMAZON', Check email for furthur details."
+
+                pa = PointsForVerifiedUploads()
+                pa.user = request.user
+                pa.points += 1
+                pa.save()
+
                 qr = qrcode.QRCode(version = 1 , box_size=15 , border=5)
 
                 cat = "Amazon"
@@ -175,7 +185,7 @@ def AImageVerify(request):
                 sve = cv2.imwrite(f_out,final_img)
 
                 subject = "Image verification successful (E-recycler)"
-                body = f"The {img} you uploaded was verified successfully. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached. You will be getting the reward point once the box is collected from you."
+                body = f"The {img} you uploaded was verified successfully. You have got one point for that. Our guy will be collecting the box from you asap! and once the verification is done. The verification will be done with the help of the qrcode attached. You will be getting the reward point once the box is collected from you."
                 sender_email = "ab7710850@gmail.com"
                 receiver_email = request.user.email
 
@@ -225,6 +235,7 @@ def AImageVerify(request):
             else:
                 predicted_class = "No, this image is not verified as 'AMAZON' "
                 os.remove(inpt)
+                
             print(prediction)
             messages.success(request,f'{predicted_class}')
             return redirect(reverse('amazon-verify'))
@@ -290,8 +301,9 @@ def FImageVerify(request):
                 new_name = rename_file[0]+unid+rename_file[1] 
                 dest = new_name
                 os.rename(source,dest)
-                predicted_class = "Uploaded image was verified as 'FLIPKART' "
-        
+                predicted_class = "Uploaded image was verified as 'FLIPKART', Check email for furthur details."
+               
+
                 qr = qrcode.QRCode(version = 1 , box_size=15 , border=5)
                 
                 cat = "Flipkart"
