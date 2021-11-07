@@ -1,0 +1,10 @@
+Django==3.2
+numpy==1.19.5
+opencv_python==4.5.4.58
+Pillow==8.4.0
+qrcode==7.3.1
+tensorflow-cpu==2.6.0
+dj-static==0.0.6
+gunicorn==19.1.1
+django-bootstrap-modal-forms
+django-crispy-forms 
